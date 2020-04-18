@@ -1,0 +1,36 @@
+{
+  "products": [
+    {
+      "product": {
+        "name": "dụ má mày",
+        "price": "2132",
+        "qty": "13223",
+        "category": "Quần"
+      },
+      "id": 1
+    },
+    {
+      "product": {
+        "name": "Trần Công Vũ",
+        "price": "13123",
+        "qty": "1312323",
+        "category": "Quần"
+      },
+      "id": 2
+    }
+  ],
+  "categorys": [
+    {
+      "id": 1,
+      "name": "Aó"
+    },
+    {
+      "id": 2,
+      "name": "Quần"
+    },
+    {
+      "id": 3,
+      "name": "Jacket"
+    }
+  ]
+}

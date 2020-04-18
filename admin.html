@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="Data.js"></script>
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<style>
+    .btn-del {
+        margin-right: 5px;
+    }
+    .modal-body label {
+        min-width: 200px;
+    }
+    .modal-body input {
+        width: 200px;
+    }
+</style>
+
+<body>
+    <div class="col-md-12">
+        <label for="name">Tên sản phẩm</label>
+        <input type="text" id="name">
+
+        <label for="price" oninput="inputNumber()">Gía</label>
+        <input type="text" id="price">
+
+        <label for="qty">Số lượng sản phẩm</label>
+        <input type="text" oninput="inputNumber()" id="qty">
+
+        <select name="category" id="category" style="width: 100px ;height: 20px;"></select>
+
+        <button id="add-product" onclick="addNewProduct()">Thêm sản phẩm</button>
+    </div>
+
+
+    <hr style="position: relative; top: 500px;height: 1px;">
+    <div style="position: relative; top: 60px;">
+        <h3>Danh sách sản phẩm</h3>
+        <table class="table" id="product_table">
+            <thead>
+                <tr>
+                    <th scope="col">Stt</th>
+                    <th scope="col">Tên</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Danh mục sản phẩn</th>
+                    <th scope="col">Edit</th>
+
+                </tr>
+            </thead>
+            <tbody id="list-product">
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label for="edit_name">Tên sản phẩm</label>
+                        <input type="text" id="edit_name">
+                    </div>
+                   <div class="col-md-12">
+                        <label for="edit_price">Gía</label>
+                        <input type="text" id="edit_price">
+                   </div>
+                   <div class="col-md-12">
+                        <label for="edit_qty">Số lượng sản phẩm</label>
+                        <input type="number" id="edit_qty">
+                   </div>
+                   <div class="col-md-12">
+                       <label for="">Danh mục</label>
+                         <select name="edit_category" id="edit_category" style="width: 200px ;height: 20px;"></select>
+                   </div>
+                   
+                </div>
+                <div class="modal-footer" >
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div id="btn-save-edit">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+<script>
+</script>
+<script src="controller.js"></script>
+
+</html>
