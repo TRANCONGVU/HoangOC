@@ -86,8 +86,6 @@
                     <th scope="col">Sell</th>
                     <th scope="col">Date</th>
                     <th scope="col">Edit</th>
-
-
                 </tr>
             </thead>
             <tbody id="list-product">
@@ -139,16 +137,13 @@
             </div>
         </div>
     </div>
-
-
 </body>
 
 <script src="controller.js"></script>
 <script>  
     $(document).ready(function () {
         getDataProduct()
-        $('#image-product').on('change', function () {
-            debugger
+        $('#image-product').on('change', function () {            
             var file = $(this)[0].files[0];
             if( file.type != "image/jpeg"){
                     errMsg = "Vui lòng chọn 1 tệp hình ảnh!";

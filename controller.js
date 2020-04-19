@@ -1,6 +1,7 @@
 var errMsg = "";
 var errInput = "";
 var cardData;
+var deleteLocalCart = [];
 
 
 function showProduct(data) {
@@ -55,7 +56,7 @@ function addNewProduct() {
         }, 0)
     } else {
         if (errMsg != "") {
-            debugger
+
             alert(errMsg);
             $(errInput).focus();
             $(errInput).select();
@@ -102,7 +103,7 @@ function openEditWindow(event) {
     });
 
     $("#btn-save-edit").empty();
-    debugger
+
     if (name == "edit") {
         $("#label-modal").text("Sửa sản phâm");
 
@@ -195,8 +196,8 @@ function showNewProduct(data) {
                 <div class="percent">` + data[i].product.sell + "%" + `</div>                
             </div>
             <div class="card-footer">
-                <a href="#" id=add_` + data[i].id + ` onclick="addToCard(event)" class="btn btn-primary">Thêm vào giỏ hàng</a>
-                <a href="#" id=detail_` + data[i].id + ` class="btn btn-danger">Chi tiết</a>
+                <a id=add_` + data[i].id + ` onclick="addToCard(event)" class="btn btn-primary">Thêm vào giỏ hàng</a>
+                <a id=detail_` + data[i].id + ` class="btn btn-danger">Chi tiết</a>
             </div>
         </div>
         </div>`
@@ -211,21 +212,21 @@ function showNewProduct(data) {
     }
 }
 
-function addToCard(event) {       
+function addToCard(event) {
     if (localStorage.getItem("card") == null) {
         var cardData = [];
     } else {
         var cardData = JSON.parse(localStorage.getItem("card"));
     }
 
-    
+
 
     var productID = parseInt(event.currentTarget.id.replace("add_", ""));
     axios.get('http://localhost:3000/products/' + productID)
         .then(function (response) {
             cardData.push(response.data);
 
-            var filterData = Array.from(new Set(cardData.map(JSON.stringify))).map(JSON.parse);  
+            var filterData = Array.from(new Set(cardData.map(JSON.stringify))).map(JSON.parse);
 
             localStorage.setItem("card", JSON.stringify(filterData));
             var storedCard = JSON.parse(localStorage.getItem("card"));
@@ -238,39 +239,168 @@ function addToCard(event) {
 
 
 function onpenCartWindow() {
-    debugger
-    
+    var total = 0;
     var storedCards = JSON.parse(localStorage.getItem("card"));
     var table = document.getElementById("list-card");
 
     $("#list-card").empty();
     for (var i = 0; i < storedCards.length; i++) {
-        var priceUnit = storedCards[i].product.price -(storedCards[i].product.price * storedCards[i].product.sell/100)
+        var priceUnit = storedCards[i].product.price - (storedCards[i].product.price * storedCards[i].product.sell / 100)
 
         priceUnit = Math.ceil(priceUnit);
-        var priceText = '<span class="old-price">'+priceUnit+'</span>';
+        var priceText = '<span class="old-price">' + storedCards[i].product.price + '</span>';
+        var buttonDel = '<button onclick="deleteCart(event)" type="button" id="btnDelCart_' + i + '" class="btn btn-danger">Xóa</button>'
 
-        var money = priceUnit * storedCards[i].product.cartQty;
-        var plus = 'plus_'+i+'';
-        var minus = 'plus_'+i+'';
-        var buttonPlus = '<button onclick="plusUnit(event)" type="button" id='+plus+' class="btn btn-info">+</button>';
-        var buttonMinus = '<button onclick="minusUnit(event) type="button" id='+minus+' class="btn btn-info">-</button>'
+        var plus = 'plus_' + i + '';
+        var minus = 'plus_' + i + '';
+        var buttonPlus = '<button onclick="plusUnit(event)" type="button" id=' + plus + ' class="btn btn-info">+</button>';
+        var buttonMinus = '<button onclick="minusUnit(event)" type="button" id=' + minus + ' class="btn btn-info">-</button>'
+        var price_sell = Math.ceil(storedCards[i].product.price * storedCards[i].product.sell / 100);
+        var money = storedCards[i].product.price - price_sell;
 
+        var text = '<tr id="table_card_row_' + i + '"> <th>' + i + '</th> <td>' + storedCards[i].product.name + '</td> <td>' +
+            "<input class='unit-pay' disabled id='price_real_" + i + "' value=" + money + ">" + "</br>" + priceText + '</td> <td>' +
+            buttonMinus + '<input class="unit-pay" id="unit-pay_' + i + '" disabled value="' +
+            storedCards[i].product.cartQty + '">' + buttonPlus + '</td><td><input class="unit-pay" id="moneyRow_' +
+            i + '" disabled value="' + money + '"></td><td>' + buttonDel + '</td></tr>'
 
-        var text = '<tr> <th>' + i + '</th> <td>' + storedCards[i].product.name + '</td> <td>' +
-        priceText + "</br>" + storedCards[i].product.price * storedCards[i].product.sell/100 + 
-            '</td> <td>'+buttonMinus+'<input class="unit-pay" id="unit-pay_'+i+'" disabled value="'+ storedCards[i].product.cartQty + 
-            '">'+buttonPlus+'</td><td><input class="unit-pay" id="moneyRow_'+i+'" disabled value="'+money+'"></td></tr>'
-
-            
         table.innerHTML += text;
+        total += money;
     }
+    $("#total").text(total);
+}
+
+function deleteCart(event) {
+    var total = 0;
+    var rowID = parseInt(event.currentTarget.id.replace("btnDelCart_", ""));
+    $("#table_card_row_" + rowID + "").remove();
+    deleteLocalCart.push(rowID);
+    console.log(deleteLocalCart);
+
+    var table = document.getElementById("card_table");
+    for (var i = 0; i < table.rows.length; i++) {
+        if ($("#moneyRow_" + i + "").val() != undefined) {
+            total += parseInt($("#moneyRow_" + i + "").val());
+        }
+    }
+    $("#total").text(total);
+
+
+    var storedCard = JSON.parse(localStorage.getItem("card"));
+    storedCard.splice(rowID, 1);
+    $("#card-text").val(storedCard.length);
+
+    localStorage.setItem("card", JSON.stringify(storedCard));
 }
 
 function plusUnit(event) {
-    var rowID = parseInt(event.currentTarget.id.replace("add_", ""));
+    var table = document.getElementById("card_table");
+    var total = 0;
+
+    var rowID = parseInt(event.currentTarget.id.replace("plus_", ""));
+    var qty_unit = parseInt($("#unit-pay_" + rowID + "").val()) + 1;
+    var price_unit = parseInt($("#price_real_" + rowID + "").val());
+
+    $("#unit-pay_" + rowID + "").val(qty_unit);
+    $("#moneyRow_" + rowID + "").val(qty_unit * price_unit);
+
+    for (var i = 0; i < table.rows.length - 1; i++) {
+        // total += parseInt($("#moneyRow_"+i+"").val());
+        if ($("#moneyRow_" + i + "").val() != undefined) {
+            total += parseInt($("#moneyRow_" + i + "").val());
+        }
+    }
+    $("#total").text(total);
 }
 
+function minusUnit(event) {
+    var total = 0;
+    var table = document.getElementById("card_table");
+    var qty_unit = 1;
+    var rowID = parseInt(event.currentTarget.id.replace("plus_", ""));
+    if (parseInt($("#unit-pay_" + rowID + "").val()) > 1) {
+        qty_unit = parseInt($("#unit-pay_" + rowID + "").val()) - 1;
+    }
+    var price_unit = parseInt($("#price_real_" + rowID + "").val());
+    $("#unit-pay_" + rowID + "").val(qty_unit);
+    $("#moneyRow_" + rowID + "").val(qty_unit * price_unit);
+
+    for (var i = 0; i < table.rows.length - 1; i++) {
+        // total += parseInt($("#moneyRow_"+i+"").val());
+        if ($("#moneyRow_" + i + "").val() != undefined) {
+            total += parseInt($("#moneyRow_" + i + "").val());
+        }
+    }
+    $("#total").text(total);
+}
+
+function payForm() {
+    var table = document.getElementById("card_table");
+    var cart = [];
+    var total = {};
+    total.total_Pay = $("#total").text()
+    cart.push(total);
+    for (var i = 0; i < table.rows.length - 1; i++) {
+        if ($("#unit-pay_" + i + "").val() != undefined) {
+            var product = {};
+            product.name = table.rows[i].cells[1].textContent;
+            product.qty = $("#unit-pay_"+i+"").val();
+            product.totalUnit = $("#moneyRow_"+i+"").val();
+            cart.push(product);
+        }
+    }
+
+    $(".form-payment").show();
+    $("#main-product").hide();
+
+    localStorage.setItem("order", JSON.stringify(cart));
+}
+
+function submitOrder(){
+    var order = new orderIfor();
+    if(checkOrderForm()){
+        order.name = $("#name_order").val();
+        order.adress = $("#address").val();
+        order.phone = $("#phone").val();
+        order.email = $("#email").val();
+        order.product = JSON.parse(localStorage.order);
+        order.status = 0;
+        order.price = JSON.parse(localStorage.order)[0].total_Pay;
+        axios.post('http://localhost:3000/orders', {
+            order            
+        })
+        .then(response => {
+            console.log(response);
+            localStorage.clear();
+            $("#card-text").val(0);
+        })
+        .catch(error => {
+            console.log(err);
+        });
+    }else {
+        alert(errMsg);
+    }
+    
+}
+function checkOrderForm(){
+    if($("#name_order").val() == ""){
+        errMsg = "Nhap ten";
+        return false;
+    }
+    if($("#address").val() == ""){
+        errMsg = "Nhap dia chi";
+        return false;
+    }
+    if($("#phone").val() == ""){
+        errMsg = "Nhap so dien thoai";
+        return false;
+    }
+    if($("#email").val() == ""){
+        errMsg = "Nhap email";
+        return false;
+    }
+    return true;
+}
 function inputNumber(event) {
     event.value = event.value.replace(/[^0-9]/g, "");
 }

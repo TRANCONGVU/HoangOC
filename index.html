@@ -19,6 +19,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="Data.js"></script>
+    <script src="orderDto.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <style>
@@ -41,19 +42,26 @@
         border-radius: 100%;
         text-align: center;
         background: yellow;
+        right: -80px;
+        top: -35px;
+        position: relative;
     }
 
     #card-text:focus {
         outline: none;
     }
+
     .unit-pay {
         text-align: center;
-        width: 50px;
+        width: 100px;
+    }
+
+    .container {
+        position: relative;
     }
 </style>
 
 <body>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
@@ -101,17 +109,46 @@
         </header>
 
         <!-- Page Features -->
-        <div class="row text-center" id="main-product">
+        <div class="row text-center" id="main-product"></div>
+        <div class="form-payment" style="display: none;">
+            <form>
+                <div class="form-group col-md-12">
+                    <label for="name_order">Họ và Tên</label>
+                    <input type="text" class="form-control" id="name_order" placeholder="Họ Và Tên">
+                </div>
+
+                <div class="d-flex">
+                    <div class="form-group col-md-6">
+                        <label for="address">Địa chỉ</label>
+                        <input type="text" class="form-control" id="address" placeholder="">
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label for="phone">Số Điện Thoại</label>
+                        <input type="text" class="form-control" id="phone" oninput="inputNumber(this)" placeholder="">
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                </div>
+                <div class="form-group col-md-12">
+                    <button onclick="submitOrder()" class="btn btn-primary">Submit</button>
+                </div>
+
+
+
+            </form>
         </div>
         <!-- /.row -->
         <!-- Modal -->
-        <div class="modal fade bd-example-modal-lg" id="cartModel" tabindex="-1" role="dialog" aria-labelledby="cartModelLabel"
-            aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="cartModel" tabindex="-1" role="dialog"
+            aria-labelledby="cartModelLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="label-modal">Gio hang</h5>
-                        <h4 id="total" style="text-align : right">6000</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -125,15 +162,21 @@
                                     <th scope="col">Đơn Giá</th>
                                     <th scope="col">Số lượng</th>
                                     <th scope="col">Thành tiền</th>
-                                    <th scope="col">xóa</th>
+                                    <th scope="col">Xóa</th>
                                 </tr>
                             </thead>
                             <tbody id="list-card">
                             </tbody>
                         </table>
+                        <div class="col-md-12 d-flex">
+                            <label for="total" style="font-size: 20px;margin-right: 20px;">Tổng tiền : </label>
+                            <h4 id="total" style="text-align : right ;"></h4>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="payForm()">Thanh
+                            toán</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
                     </div>
@@ -162,7 +205,6 @@
     $(document).ready(function () {
         getNewProduct();
     })
-    
 </script>
 
 
