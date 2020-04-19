@@ -11,34 +11,62 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="Data.js"></script>
-
+    <script src="productDto.js"></script>
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <style>
-    .btn-del {
+    #list-product .btn {
         margin-right: 5px;
     }
+
     .modal-body label {
         min-width: 200px;
     }
+
     .modal-body input {
         width: 200px;
+    }
+
+    .err {
+        color: red;
+        display: none;
+    }
+
+    .disabled-input {
+        border: none;
     }
 </style>
 
 <body>
     <div class="col-md-12">
         <label for="name">Tên sản phẩm</label>
-        <input type="text" id="name">
+        <input type="text" id="name" maxlength="200">
+        <span class="err"></span>
 
-        <label for="price" oninput="inputNumber()">Gía</label>
-        <input type="text" id="price">
+        <label for="price" >Gía</label>
+        <input type="text" oninput="inputNumber(this)" id="price" maxlength="50">
+        <span class="err"></span>
+
+        <label for="sell" oninput="inputNumber(this)">Sell(%)</label>
+        <input type="text" id="sell" maxlength="2">
+        <span class="err"></span>
 
         <label for="qty">Số lượng sản phẩm</label>
-        <input type="text" oninput="inputNumber()" id="qty">
+        <input type="text" oninput="inputNumber(this)" maxlength="50" id="qty">
+        <span class="err"></span>
 
         <select name="category" id="category" style="width: 100px ;height: 20px;"></select>
+
+        <form>
+            <div class="form-group">
+                <label for="image-product">file input</label>
+                <input type="file" class="form-control-file" id="image-product">
+            </div>
+        </form>
+        <div class="container js-file-list">
+        </div> 
+
 
         <button id="add-product" onclick="addNewProduct()">Thêm sản phẩm</button>
     </div>
@@ -55,7 +83,10 @@
                     <th scope="col">Giá</th>
                     <th scope="col">Số lượng</th>
                     <th scope="col">Danh mục sản phẩn</th>
+                    <th scope="col">Sell</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Edit</th>
+
 
                 </tr>
             </thead>
@@ -71,31 +102,35 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="label-modal">Sửa sản phẩm</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" id="edit_modal">
                     <div class="col-md-12">
                         <label for="edit_name">Tên sản phẩm</label>
                         <input type="text" id="edit_name">
                     </div>
-                   <div class="col-md-12">
+                    <div class="col-md-12">
                         <label for="edit_price">Gía</label>
                         <input type="text" id="edit_price">
-                   </div>
-                   <div class="col-md-12">
+                    </div>
+                    <div class="col-md-12">
+                        <label for="edit_sell">sell</label>
+                        <input type="text" id="edit_sell">
+                    </div>
+                    <div class="col-md-12">
                         <label for="edit_qty">Số lượng sản phẩm</label>
                         <input type="number" id="edit_qty">
-                   </div>
-                   <div class="col-md-12">
-                       <label for="">Danh mục</label>
-                         <select name="edit_category" id="edit_category" style="width: 200px ;height: 20px;"></select>
-                   </div>
-                   
-                </div>
-                <div class="modal-footer" >
+                    </div>
+                    <div class="col-md-12">
+                        <label for="">Danh mục</label>
+                        <select name="edit_category" id="edit_category" style="width: 200px ;height: 20px;"></select>
+                    </div>
+
+                </div>                
+                <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <div id="btn-save-edit">
 
@@ -107,8 +142,43 @@
 
 
 </body>
-<script>
-</script>
+
 <script src="controller.js"></script>
+<script>  
+    $(document).ready(function () {
+        getDataProduct()
+        $('#image-product').on('change', function () {
+            debugger
+            var file = $(this)[0].files[0];
+            if( file.type != "image/jpeg"){
+                    errMsg = "Vui lòng chọn 1 tệp hình ảnh!";
+                    alert(errMsg);
+                    return;
+            }else{
+                var fileReader = new FileReader();
+                fileReader.onload = function () {    
+                    
+                    var thisImage = fileReader.result;
+                    localStorage.setItem("imgData", thisImage);
+                    
+                    var str = '<div class="col-md-2">' +
+                        '<span class="js-file-name"></span><br>' +
+                        '<span class="js-file-size"></span> (Byte)<br>' +
+                        '<img class="img-thumbnail js-file-image" style="width: 100%; height: 100%">' +
+                        '</div>';
+                    $('.js-file-list').append(str);
+
+                    var imageSrc = event.target.result;
+                    var fileName = file.name;
+                    var fileSize = file.size;
+                    $('.js-file-name').text(fileName);
+                    $('.js-file-size').text(fileSize);
+                    $('.js-file-image').attr('src', imageSrc);
+                };
+                fileReader.readAsDataURL(file);
+            }            
+        });
+    });
+</script>
 
 </html>

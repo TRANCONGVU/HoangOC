@@ -31,13 +31,29 @@ function getDataProduct() {
 
     axios.get('http://localhost:3000/categorys')
         .then(function (category) {
-            debugger
+            
             category = category.data;
             $("#edit_category").empty();
             for (var i = 0; i < category.length; i++) {
                 var option = '<option value=' + category[i].id + '>' + category[i].name + '</option>'
                 $("#edit_category").append(option);
             }
+        });
+}
+
+function getNewProduct(){
+    axios.get('http://localhost:3000/products')
+        .then(function (response) {
+            showNewProduct(response.data);
+            // handle success
+
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .then(function () {
+            // always executed
         });
 }
 
@@ -48,7 +64,7 @@ function postData(product) {
     //     data: product
     // });
     axios.post('http://localhost:3000/products/', {
-            product            
+            product
         })
         .then(response => {
             console.log(response);
