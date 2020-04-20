@@ -58,8 +58,8 @@ function addNewProduct() {
         if (errMsg != "") {
 
             alert(errMsg);
-            $(errInput).focus();
-            $(errInput).select();
+            // $(errInput).focus();
+            // $(errInput).select();
         }
     }
 
@@ -197,7 +197,7 @@ function showNewProduct(data) {
             </div>
             <div class="card-footer">
                 <a id=add_` + data[i].id + ` onclick="addToCard(event)" class="btn btn-primary">Thêm vào giỏ hàng</a>
-                <a id=detail_` + data[i].id + ` class="btn btn-danger">Chi tiết</a>
+                <a id=detail_`+ data[i].id + ` onclick="detailProduct(event)" class="btn btn-danger">Chi tiết</a>
             </div>
         </div>
         </div>`
@@ -213,15 +213,19 @@ function showNewProduct(data) {
 }
 
 function addToCard(event) {
+    debugger
+    var productID
     if (localStorage.getItem("card") == null) {
         var cardData = [];
     } else {
         var cardData = JSON.parse(localStorage.getItem("card"));
     }
-
-
-
-    var productID = parseInt(event.currentTarget.id.replace("add_", ""));
+    if(event.currentTarget.name == "detail"){
+        productID = parseInt(event.currentTarget.id.replace("detaiProduct_", ""));
+    }else{
+        productID = parseInt(event.currentTarget.id.replace("add_", ""));
+    }
+   
     axios.get('http://localhost:3000/products/' + productID)
         .then(function (response) {
             cardData.push(response.data);
@@ -232,7 +236,7 @@ function addToCard(event) {
             var storedCard = JSON.parse(localStorage.getItem("card"));
             $("#card-text").val(storedCard.length);
 
-            console.log(JSON.parse(localStorage.getItem("card")));
+            alert("thêm hàng thành công");
         });
 }
 
@@ -268,6 +272,43 @@ function onpenCartWindow() {
         total += money;
     }
     $("#total").text(total);
+}
+
+function detailProduct(event){
+    
+    var id = event.currentTarget.id.replace("detail_" , "");
+    id = parseInt(id);
+
+    axios.get('http://localhost:3000/products/' + id)
+        .then(function (response) {                        
+            showDetailProduct(response.data);
+        })
+}
+
+function changeDisplay(event){
+    if(event.currentTarget.name == "main"){
+        $("#detail").hide();
+        $("#main").show();
+    }
+}
+function showDetailProduct(params){
+    $("#detail").show();
+    $("#main").hide();
+    var id = params.id;
+    params = params.product;
+    var priceUnit = params.price - (params.price * params.sell / 100);
+    priceUnit = Math.ceil(priceUnit);
+    var priceText = priceUnit.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    var sell = params.price * params.sell / 100
+    $("#product-title").text(params.name);
+    $("#qty_detail").text(params.qty);
+    $("#price_detail").text(Math.ceil(sell));
+    $("#detai_sell").text(params.sell + "%");
+    $("#price_detail_sell").text(priceText + " Đồng");
+    $("#detail_add").empty();
+    $("#detail_add").append(
+        `<a class="add-to-cart btn btn-default" id="detaiProduct_`+id+`" name="detail" onclick="addToCard(event)" type="button">add to cart</a>`
+    )
 }
 
 function deleteCart(event) {
@@ -344,8 +385,8 @@ function payForm() {
         if ($("#unit-pay_" + i + "").val() != undefined) {
             var product = {};
             product.name = table.rows[i].cells[1].textContent;
-            product.qty = $("#unit-pay_"+i+"").val();
-            product.totalUnit = $("#moneyRow_"+i+"").val();
+            product.qty = $("#unit-pay_" + i + "").val();
+            product.totalUnit = $("#moneyRow_" + i + "").val();
             cart.push(product);
         }
     }
@@ -356,9 +397,10 @@ function payForm() {
     localStorage.setItem("order", JSON.stringify(cart));
 }
 
-function submitOrder(){
+function submitOrder() {
+    debugger
     var order = new orderIfor();
-    if(checkOrderForm()){
+    if (checkOrderForm()) {
         order.name = $("#name_order").val();
         order.adress = $("#address").val();
         order.phone = $("#phone").val();
@@ -367,40 +409,62 @@ function submitOrder(){
         order.status = 0;
         order.price = JSON.parse(localStorage.order)[0].total_Pay;
         axios.post('http://localhost:3000/orders', {
-            order            
-        })
-        .then(response => {
-            console.log(response);
-            localStorage.clear();
-            $("#card-text").val(0);
-        })
-        .catch(error => {
-            console.log(err);
-        });
-    }else {
+                order
+            })
+            .then(response => {
+                console.log(response);
+                localStorage.clear();
+                $("#card-text").val(0);
+            })
+            .catch(error => {
+                console.log(err);
+            });
+    } else {
         alert(errMsg);
+        return;
     }
-    
+
 }
-function checkOrderForm(){
-    if($("#name_order").val() == ""){
+
+function checkOrderForm() {
+    if ($("#name_order").val() == "") {
         errMsg = "Nhap ten";
         return false;
     }
-    if($("#address").val() == ""){
+    if ($("#address").val() == "") {
         errMsg = "Nhap dia chi";
         return false;
     }
-    if($("#phone").val() == ""){
+    if ($("#phone").val() == "") {
         errMsg = "Nhap so dien thoai";
         return false;
     }
-    if($("#email").val() == ""){
+    if ($("#email").val() == "") {
         errMsg = "Nhap email";
         return false;
     }
     return true;
 }
+
+function addNewCategory() {
+    var category = {};
+    if( $("#name_category").val() == ""){
+        errMsg = "Nhập tên danh mục!";
+        alert(errMsg);
+        return;
+    }
+    category.name = $("#name_category").val();
+    axios.post('http://localhost:3000/categorys', {
+                category
+            })
+            .then(response => {
+                console.log(response);                
+            })
+            .catch(error => {
+                console.log(err);
+            });
+}
+
 function inputNumber(event) {
     event.value = event.value.replace(/[^0-9]/g, "");
 }

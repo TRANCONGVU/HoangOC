@@ -1,0 +1,93 @@
+{
+  "products": [
+    {
+      "product": {
+        "name": "hoàng thùy linh",
+        "price": "313132",
+        "qty": "12312",
+        "category": "Jacket",
+        "time": "04/19/2020",
+        "sell": 12,
+        "cartQty": 1
+      },
+      "id": 3
+    },
+    {
+      "product": {
+        "name": "tom",
+        "price": "1211",
+        "qty": "12312312",
+        "category": "Jacket",
+        "time": "04/19/2020",
+        "sell": 11,
+        "cartQty": 1
+      },
+      "id": 4
+    },
+    {
+      "product": {
+        "name": "yui hatano",
+        "price": "5000",
+        "qty": "1",
+        "category": "Quần",
+        "time": "04/19/2020",
+        "sell": 10,
+        "cartQty": 1
+      },
+      "id": 5
+    }
+  ],
+  "categorys": [
+    {
+      "category": {
+        "name": "áo"
+      },
+      "id": 1
+    },
+    {
+      "category": {
+        "name": "quần"
+      },
+      "id": 2
+    },
+    {
+      "category": {
+        "name": "chim"
+      },
+      "id": 3
+    }
+  ],
+  "orders": [
+    {
+      "order": {
+        "name": "tran cong vu",
+        "adress": "236 - Hoang quoc viet - ha noi",
+        "phone": "0974590197",
+        "email": "litterfail97@gmail.com",
+        "product": [
+          {
+            "total_Pay": "563343"
+          },
+          {
+            "name": "Tên",
+            "qty": "3",
+            "totalUnit": "3231"
+          },
+          {
+            "name": "tom",
+            "qty": "2",
+            "totalUnit": "551112"
+          },
+          {
+            "name": "hoàng thùy linh",
+            "qty": "2",
+            "totalUnit": "9000"
+          }
+        ],
+        "price": "563343",
+        "status": 0
+      },
+      "id": 1
+    }
+  ]
+}

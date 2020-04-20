@@ -21,6 +21,7 @@
     <script src="Data.js"></script>
     <script src="orderDto.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="cart.css">
 </head>
 <style>
     .name-title {
@@ -45,6 +46,7 @@
         right: -80px;
         top: -35px;
         position: relative;
+        cursor: pointer;
     }
 
     #card-text:focus {
@@ -58,6 +60,16 @@
 
     .container {
         position: relative;
+    }
+
+    .nav-item {
+        cursor: pointer;
+    }
+
+    #detai {
+        width: 100%;
+        /* height: calc(100vh - 56px); */
+        background: burlywood;
     }
 </style>
 
@@ -95,16 +107,75 @@
             </div>
         </div>
     </nav>
+    <div id="detail" style="display: none;">
+        <div class="card">
+            <div class="container-fliud">
+                <div class="wrapper row">
+                    <div class="preview col-md-6">
 
+                        <div class="preview-pic tab-content">
+                            <div class="tab-pane active" id="pic-1"><img src="http://placekitten.com/400/252" /></div>
+                            <div class="tab-pane" id="pic-2"><img src="http://placekitten.com/400/252" /></div>
+                            <div class="tab-pane" id="pic-3"><img src="http://placekitten.com/400/252" /></div>
+                            <div class="tab-pane" id="pic-4"><img src="http://placekitten.com/400/252" /></div>
+                            <div class="tab-pane" id="pic-5"><img src="http://placekitten.com/400/252" /></div>
+                        </div>
+                        <ul class="preview-thumbnail nav nav-tabs">
+                            <li class="active"><a data-target="#pic-1" data-toggle="tab"><img
+                                        src="http://placekitten.com/200/126" /></a></li>
+                            <li><a data-target="#pic-2" data-toggle="tab"><img
+                                        src="http://placekitten.com/200/126" /></a></li>
+                            <li><a data-target="#pic-3" data-toggle="tab"><img
+                                        src="http://placekitten.com/200/126" /></a></li>
+                            <li><a data-target="#pic-4" data-toggle="tab"><img
+                                        src="http://placekitten.com/200/126" /></a></li>
+                            <li><a data-target="#pic-5" data-toggle="tab"><img
+                                        src="http://placekitten.com/200/126" /></a></li>
+                        </ul>
+
+                    </div>
+                    <div class="details col-md-6">
+                        <h3 class="product-title" id="product-title">men's shoes fashion</h3>
+                        <div class="rating d-flex">                            
+                            <span>1 trong &nbsp;</span><span class="review-no" id="qty_detail"></span><span>&nbsp;sản phẩm</span>
+                        </div>
+                        <!-- <p class="product-description">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
+                            cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p> -->
+                        <h4 class="price" >current price: <span id="price_detail_sell"></span></h4>
+                        <p class="vote"><span>giảm</span><strong id="detai_sell"></strong> tiết kiệm <strong id="price_detail"></strong>
+                        </p>
+                        <h5 class="sizes">sizes:
+                            <span class="size" data-toggle="tooltip" title="small">s</span>
+                            <span class="size" data-toggle="tooltip" title="medium">m</span>
+                            <span class="size" data-toggle="tooltip" title="large">l</span>
+                            <span class="size" data-toggle="tooltip" title="xtra large">xl</span>
+                        </h5>
+                        <h5 class="colors">colors:
+                            <span class="color orange "></span>
+                            <span class="color green"></span>
+                            <span class="color blue"></span>
+                        </h5>
+                        <div class="d-flex">
+                            <div class="action">
+                                <a class="add-to-cart btn btn-default" name="main" onclick="changeDisplay(event)" 
+                                type="button" style="margin-right : 20px;background: greenyellow">vể trang chủ</a>
+                            </div>                        
+                            <div class="action" id="detail_add"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
     <!-- Page Content -->
-    <div class="container">
+    <div class="container" id="main" style="display: block;">
 
         <!-- Jumbotron Header -->
         <header class="jumbotron my-4">
             <h1 class="display-3">A Warm Welcome!</h1>
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt
-                possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam
-                repellat.</p>
+            <p class="lead">Đây là trang index</p>
             <a href="#" class="btn btn-primary btn-lg">Call to action!</a>
         </header>
 
@@ -134,7 +205,7 @@
                     <input type="email" class="form-control" id="email" placeholder="name@example.com">
                 </div>
                 <div class="form-group col-md-12">
-                    <button onclick="submitOrder()" class="btn btn-primary">Submit</button>
+                    <a onclick="submitOrder()" class="btn btn-primary">Submit</a>
                 </div>
 
 
@@ -147,7 +218,7 @@
             aria-labelledby="cartModelLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" style="border-bottom : none">
                         <h5 class="modal-title" id="label-modal">Gio hang</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -174,7 +245,7 @@
                         </div>
 
                     </div>
-                    <div class="modal-footer">
+                    <div class="modal-footer" style="margin : 0 10px">
                         <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="payForm()">Thanh
                             toán</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

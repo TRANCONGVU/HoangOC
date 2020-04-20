@@ -39,16 +39,22 @@
   ],
   "categorys": [
     {
-      "id": 1,
-      "name": "áo thun"
+      "category": {
+        "name": "áo"
+      },
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Quần"
+      "category": {
+        "name": "quần"
+      },
+      "id": 2
     },
     {
-      "id": 3,
-      "name": "Jacket"
+      "category": {
+        "name": "chim"
+      },
+      "id": 3
     }
   ],
   "orders": [
@@ -82,6 +88,63 @@
         "status": 0
       },
       "id": 1
+    },
+    {
+      "order": {
+        "name": "đâsdasds",
+        "adress": "236 - Hoang quoc viet - ha noi",
+        "phone": "0974590197",
+        "email": "woaini.st@gmail.com",
+        "product": [
+          {
+            "total_Pay": "281133"
+          },
+          {
+            "name": "Tên",
+            "qty": "1",
+            "totalUnit": "4500"
+          },
+          {
+            "name": "yui hatano",
+            "qty": "1",
+            "totalUnit": "1077"
+          },
+          {
+            "name": "tom",
+            "qty": "1",
+            "totalUnit": "275556"
+          }
+        ],
+        "price": "281133",
+        "status": 0
+      },
+      "id": 2
+    },
+    {
+      "order": {
+        "name": "hoàng thùy linh",
+        "adress": "123 Ba dinh ha noi",
+        "phone": "13234402340",
+        "email": "tom@gmail.com",
+        "product": [
+          {
+            "total_Pay": "276633"
+          },
+          {
+            "name": "Tên",
+            "qty": "1",
+            "totalUnit": "275556"
+          },
+          {
+            "name": "hoàng thùy linh",
+            "qty": "1",
+            "totalUnit": "1077"
+          }
+        ],
+        "price": "276633",
+        "status": 0
+      },
+      "id": 3
     }
   ]
 }

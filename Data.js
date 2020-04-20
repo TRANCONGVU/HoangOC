@@ -15,9 +15,10 @@ function getDataProduct() {
 
     axios.get('http://localhost:3000/categorys')
         .then(function (category) {
+            debugger
             category = category.data;
             for (var i = 0; i < category.length; i++) {
-                var option = '<option value=' + category[i].id + '>' + category[i].name + '</option>'
+                var option = '<option value=' + category[i].id + '>' + category[i].category.name + '</option>'
                 $("#category").append(option);
             }
         })
@@ -35,7 +36,7 @@ function getDataProduct() {
             category = category.data;
             $("#edit_category").empty();
             for (var i = 0; i < category.length; i++) {
-                var option = '<option value=' + category[i].id + '>' + category[i].name + '</option>'
+                var option = '<option value=' + category[i].id + '>' + category[i].category.name + '</option>'
                 $("#edit_category").append(option);
             }
         });
@@ -58,11 +59,6 @@ function getNewProduct(){
 }
 
 function postData(product) {
-    // axios({
-    //     method: 'post',
-    //     url: 'http://localhost:3000/products',
-    //     data: product
-    // });
     axios.post('http://localhost:3000/products/', {
             product
         })
@@ -86,12 +82,7 @@ function getDelete(id) {
         })
 }
 
-function editProductData(product, idProduct) {
-    // axios({
-    //     method: 'post',
-    //     url: 'http://localhost:3000/products/' + idProduct,
-    //     data: product
-    // });
+function editProductData(product, idProduct) {    
     axios.put('http://localhost:3000/products/' + idProduct, {
             product            
         })

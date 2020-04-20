@@ -1,4 +1,3 @@
 function cardDto(){
-    this.name = "";
-    this.qty = 0;        
+    this.name = "";       
 }
