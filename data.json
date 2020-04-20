@@ -2,18 +2,6 @@
   "products": [
     {
       "product": {
-        "name": "hoàng thùy linh",
-        "price": "313132",
-        "qty": "12312",
-        "category": "Jacket",
-        "time": "04/19/2020",
-        "sell": 12,
-        "cartQty": 1
-      },
-      "id": 3
-    },
-    {
-      "product": {
         "name": "tom",
         "price": "1211",
         "qty": "12312312",
@@ -35,6 +23,30 @@
         "cartQty": 1
       },
       "id": 5
+    },
+    {
+      "product": {
+        "name": "Trần Công Vũ",
+        "price": "50000",
+        "qty": "1",
+        "category": "quần",
+        "time": "04/21/2020",
+        "sell": 15,
+        "cartQty": 1
+      },
+      "id": 6
+    },
+    {
+      "product": {
+        "name": "Văn Mai Hương",
+        "price": "50000",
+        "qty": "1",
+        "category": "Hang người mẫu",
+        "time": "04/21/2020",
+        "sell": 50,
+        "cartQty": 1
+      },
+      "id": 7
     }
   ],
   "categorys": [
@@ -55,6 +67,12 @@
         "name": "chim"
       },
       "id": 3
+    },
+    {
+      "category": {
+        "name": "Hang người mẫu"
+      },
+      "id": 4
     }
   ],
   "orders": [

@@ -58,8 +58,8 @@ function addNewProduct() {
         if (errMsg != "") {
 
             alert(errMsg);
-            // $(errInput).focus();
-            // $(errInput).select();
+            $(errInput).focus();
+            $(errInput).select();
         }
     }
 
