@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,7 +14,6 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/heroic-features.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -27,16 +26,16 @@
     .name-title {
         text-transform: capitalize;
     }
-
+    
     .old-price {
         text-decoration: line-through;
     }
-
+    
     .percent {
         background: red;
         color: cornsilk;
     }
-
+    
     #card-text {
         width: 30px;
         height: 30px;
@@ -48,24 +47,24 @@
         position: relative;
         cursor: pointer;
     }
-
+    
     #card-text:focus {
         outline: none;
     }
-
+    
     .unit-pay {
         text-align: center;
         width: 100px;
     }
-
+    
     .container {
         position: relative;
     }
-
+    
     .nav-item {
         cursor: pointer;
     }
-
+    
     #detai {
         width: 100%;
         /* height: calc(100vh - 56px); */
@@ -78,8 +77,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Start Bootstrap</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -121,27 +119,32 @@
                             <div class="tab-pane" id="pic-5"><img src="http://placekitten.com/400/252" /></div>
                         </div>
                         <ul class="preview-thumbnail nav nav-tabs">
-                            <li class="active"><a data-target="#pic-1" data-toggle="tab"><img
-                                        src="http://placekitten.com/200/126" /></a></li>
-                            <li><a data-target="#pic-2" data-toggle="tab"><img
-                                        src="http://placekitten.com/200/126" /></a></li>
-                            <li><a data-target="#pic-3" data-toggle="tab"><img
-                                        src="http://placekitten.com/200/126" /></a></li>
-                            <li><a data-target="#pic-4" data-toggle="tab"><img
-                                        src="http://placekitten.com/200/126" /></a></li>
-                            <li><a data-target="#pic-5" data-toggle="tab"><img
-                                        src="http://placekitten.com/200/126" /></a></li>
+                            <li class="active">
+                                <a data-target="#pic-1" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
+                            </li>
+                            <li>
+                                <a data-target="#pic-2" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
+                            </li>
+                            <li>
+                                <a data-target="#pic-3" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
+                            </li>
+                            <li>
+                                <a data-target="#pic-4" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
+                            </li>
+                            <li>
+                                <a data-target="#pic-5" data-toggle="tab"><img src="http://placekitten.com/200/126" /></a>
+                            </li>
                         </ul>
 
                     </div>
                     <div class="details col-md-6">
                         <h3 class="product-title" id="product-title">men's shoes fashion</h3>
-                        <div class="rating d-flex">                            
+                        <div class="rating d-flex">
                             <span>1 trong &nbsp;</span><span class="review-no" id="qty_detail"></span><span>&nbsp;sản phẩm</span>
                         </div>
                         <!-- <p class="product-description">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
                             cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p> -->
-                        <h4 class="price" >current price: <span id="price_detail_sell"></span></h4>
+                        <h4 class="price">current price: <span id="price_detail_sell"></span></h4>
                         <p class="vote"><span>giảm</span><strong id="detai_sell"></strong> tiết kiệm <strong id="price_detail"></strong>
                         </p>
                         <h5 class="sizes">sizes:
@@ -157,9 +160,8 @@
                         </h5>
                         <div class="d-flex">
                             <div class="action">
-                                <a class="add-to-cart btn btn-default" name="main" onclick="changeDisplay(event)" 
-                                type="button" style="margin-right : 20px;background: greenyellow">vể trang chủ</a>
-                            </div>                        
+                                <a class="add-to-cart btn btn-default" name="main" onclick="changeDisplay(event)" type="button" style="margin-right : 20px;background: greenyellow">vể trang chủ</a>
+                            </div>
                             <div class="action" id="detail_add"></div>
                         </div>
                     </div>
@@ -214,8 +216,7 @@
         </div>
         <!-- /.row -->
         <!-- Modal -->
-        <div class="modal fade bd-example-modal-lg" id="cartModel" tabindex="-1" role="dialog"
-            aria-labelledby="cartModelLabel" aria-hidden="true">
+        <div class="modal fade bd-example-modal-lg" id="cartModel" tabindex="-1" role="dialog" aria-labelledby="cartModelLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header" style="border-bottom : none">
@@ -273,7 +274,7 @@
 </body>
 <script src="controller.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         getNewProduct();
     })
 </script>

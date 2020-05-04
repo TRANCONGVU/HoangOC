@@ -10,13 +10,13 @@ function showProduct(data) {
 
     $("#list-product").empty();
     for (let i = 0; i < data.length; i++) {
-        var btnDel = '<button class="btn btn-del"  data-toggle="modal" data-target="#exampleModal" id="product_' +
+        var btnDel = '<button class="btn btn-del"  data-toggle="modal" data-target="#exampleModal" name="product_' + i + 1 + '" id="product_' +
             data[i].id + '" onclick="deleteProduct(event)">Xóa</button>';
 
-        var btnEdit = '<button class="btn btn-edit" name="edit" data-toggle="modal" data-target="#exampleModal" id="edit_' + data[i].id +
+        var btnEdit = '<button class="btn btn-edit" name="edit_' + i + 1 + '" data-toggle="modal" data-target="#exampleModal" id="edit_' + data[i].id +
             '" onclick="openEditWindow(event)">Sửa</button>';
 
-        var btnDetail = '<button class="btn btn-detai" name="detail" data-toggle="modal" data-target="#exampleModal" id="edit_' + data[i].id +
+        var btnDetail = '<button class="btn btn-detai" name="detail_' + i + 1 + '" data-toggle="modal" data-target="#exampleModal" id="edit_' + i + 1 + '' + data[i].id +
             '" onclick="openEditWindow(event)">Detail</button>';
 
 
@@ -45,7 +45,7 @@ function addNewProduct() {
     }
     product.time = getToday();
     product.category = $("#category").find(":selected").text();
-
+    debugger
     if (checkInputData(product)) {
         postData(product);
         setTimeout(() => {
@@ -80,8 +80,9 @@ function deleteProduct(event) {
 }
 
 function openEditWindow(event) {
-    var name = event.currentTarget.name;
+    var name = event.currentTarget.name.replace(/[0-9_]/g, '');
     var product_id = parseInt(event.currentTarget.id.replace("edit_", ""));
+
     var rowData = document.getElementById('product_table');
 
     edit_name = document.getElementById("edit_name");
@@ -91,26 +92,29 @@ function openEditWindow(event) {
     edit_sell = document.getElementById("edit_sell");
 
 
-    edit_name.value = rowData.rows.item(product_id).cells[1].textContent;
-    edit_price.value = rowData.rows.item(product_id).cells[2].textContent;
-    edit_qty.value = rowData.rows.item(product_id).cells[3].textContent;
-    edit_sell.value = (rowData.rows.item(product_id).cells[5].textContent).replace("%", '')
-
-    $("#edit_category option").each(function (index) {
-        if (rowData.rows.item(product_id).cells[4].textContent == $(this).text()) {
-            edit_category.selectedIndex = index;
-        }
-    });
-
     $("#btn-save-edit").empty();
 
     if (name == "edit") {
+        var rowID = parseInt(event.currentTarget.name.replace("edit_", ""));
+
+        edit_name.value = rowData.rows.item(rowID).cells[1].textContent;
+        edit_price.value = rowData.rows.item(rowID).cells[2].textContent;
+        edit_qty.value = rowData.rows.item(rowID).cells[3].textContent;
+        edit_sell.value = (rowData.rows.item(rowID).cells[5].textContent).replace("%", '')
+
+        $("#edit_category option").each(function(index) {
+            if (rowData.rows.item(rowID).cells[4].textContent == $(this).text()) {
+                edit_category.selectedIndex = index;
+            }
+        });
+
         $("#label-modal").text("Sửa sản phâm");
 
         $("#edit_name").prop("disabled", false);
         $("#edit_price").prop("disabled", false);
         $("#edit_qty").prop("disabled", false);
         $("#edit_category").prop("disabled", false);
+        $("#edit_sell").prop("disabled", false);
 
         $("#edit_name").removeClass("disabled-input");
         $("#edit_price").removeClass("disabled-input");
@@ -122,12 +126,28 @@ function openEditWindow(event) {
             '" onclick="editProduct(event)" class="btn btn-primary">Save</button>'
         );
     } else if (name == "detail") {
+
+        var rowID = parseInt(event.currentTarget.name.replace("detail_", ""));
+
+        edit_name.value = rowData.rows.item(rowID).cells[1].textContent;
+        edit_price.value = rowData.rows.item(rowID).cells[2].textContent;
+        edit_qty.value = rowData.rows.item(rowID).cells[3].textContent;
+        edit_sell.value = (rowData.rows.item(rowID).cells[5].textContent).replace("%", '')
+
+        $("#edit_category option").each(function(index) {
+            if (rowData.rows.item(rowID).cells[4].textContent == $(this).text()) {
+                edit_category.selectedIndex = index;
+            }
+        });
+
+
         $("#label-modal").text("Xem chi tiết sản phẩm");
 
         $("#edit_name").prop("disabled", true);
         $("#edit_price").prop("disabled", true);
         $("#edit_qty").prop("disabled", true);
         $("#edit_category").prop("disabled", true);
+        $("#edit_sell").prop("disabled", true);
 
         $("#edit_name").addClass("disabled-input");
         $("#edit_price").addClass("disabled-input");
@@ -197,7 +217,7 @@ function showNewProduct(data) {
             </div>
             <div class="card-footer">
                 <a id=add_` + data[i].id + ` onclick="addToCard(event)" class="btn btn-primary">Thêm vào giỏ hàng</a>
-                <a id=detail_`+ data[i].id + ` onclick="detailProduct(event)" class="btn btn-danger">Chi tiết</a>
+                <a id=detail_` + data[i].id + ` onclick="detailProduct(event)" class="btn btn-danger">Chi tiết</a>
             </div>
         </div>
         </div>`
@@ -220,14 +240,14 @@ function addToCard(event) {
     } else {
         var cardData = JSON.parse(localStorage.getItem("card"));
     }
-    if(event.currentTarget.name == "detail"){
+    if (event.currentTarget.name == "detail") {
         productID = parseInt(event.currentTarget.id.replace("detaiProduct_", ""));
-    }else{
+    } else {
         productID = parseInt(event.currentTarget.id.replace("add_", ""));
     }
-   
+
     axios.get('http://localhost:3000/products/' + productID)
-        .then(function (response) {
+        .then(function(response) {
             cardData.push(response.data);
 
             var filterData = Array.from(new Set(cardData.map(JSON.stringify))).map(JSON.parse);
@@ -274,24 +294,25 @@ function onpenCartWindow() {
     $("#total").text(total);
 }
 
-function detailProduct(event){
-    
-    var id = event.currentTarget.id.replace("detail_" , "");
+function detailProduct(event) {
+
+    var id = event.currentTarget.id.replace("detail_", "");
     id = parseInt(id);
 
     axios.get('http://localhost:3000/products/' + id)
-        .then(function (response) {                        
+        .then(function(response) {
             showDetailProduct(response.data);
         })
 }
 
-function changeDisplay(event){
-    if(event.currentTarget.name == "main"){
+function changeDisplay(event) {
+    if (event.currentTarget.name == "main") {
         $("#detail").hide();
         $("#main").show();
     }
 }
-function showDetailProduct(params){
+
+function showDetailProduct(params) {
     $("#detail").show();
     $("#main").hide();
     var id = params.id;
@@ -307,7 +328,7 @@ function showDetailProduct(params){
     $("#price_detail_sell").text(priceText + " Đồng");
     $("#detail_add").empty();
     $("#detail_add").append(
-        `<a class="add-to-cart btn btn-default" id="detaiProduct_`+id+`" name="detail" onclick="addToCard(event)" type="button">add to cart</a>`
+        `<a class="add-to-cart btn btn-default" id="detaiProduct_` + id + `" name="detail" onclick="addToCard(event)" type="button">add to cart</a>`
     )
 }
 
@@ -448,21 +469,21 @@ function checkOrderForm() {
 
 function addNewCategory() {
     var category = {};
-    if( $("#name_category").val() == ""){
+    if ($("#name_category").val() == "") {
         errMsg = "Nhập tên danh mục!";
         alert(errMsg);
         return;
     }
     category.name = $("#name_category").val();
     axios.post('http://localhost:3000/categorys', {
-                category
-            })
-            .then(response => {
-                console.log(response);                
-            })
-            .catch(error => {
-                console.log(err);
-            });
+            category
+        })
+        .then(response => {
+            console.log(response);
+        })
+        .catch(error => {
+            console.log(err);
+        });
 }
 
 function inputNumber(event) {
